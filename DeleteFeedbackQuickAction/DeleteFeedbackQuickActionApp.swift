@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct DeleteFeedbackQuickActionApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+	@UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+	@Environment(\.scenePhase) var scenePhase
+	
+	var body: some Scene {
+		WindowGroup {
+			ContentView()
+				.onChange(of: scenePhase, { oldValue, newValue in
+					switch newValue {
+					case .background:
+						QuickActionsManager.shared.addQuickActions()
+					default: break
+					}
+				})
+		}
+	}
 }
